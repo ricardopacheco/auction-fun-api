@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+function install_osx_packages {
+  check_if_xcode_is_installed
+  check_if_brew_is_installed
+  install_brew_dependencies
+}
+
+function check_if_xcode_is_installed {
+  if ! command -v xcode-select &> /dev/null; then
+    echo "Xcode is not installed. Please install Xcode and try again."
+    exit 1
+  fi
+}
+
+function check_if_brew_is_installed {
+  if ! command -v brew &> /dev/null; then
+    echo "Homebrew is not installed. Please install Homebrew and try again."
+    exit 1
+  fi
+}
+
+function install_brew_dependencies {
+  BREWFILE="$PWD/devops/development/osx/Brewfile"
+
+  brew bundle --file=$BREWFILE
+}

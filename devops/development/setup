@@ -1,0 +1,38 @@
+#!/bin/zsh
+
+if ! command -v zsh &> /dev/null; then
+  echo "Zsh is not installed. Please install zsh and try again."
+  exit 1
+fi
+
+case "$OSTYPE" in
+  linux-gnu*)
+    if [[ $(grep -E '^ID=ubuntu$' /etc/os-release) ]]; then
+      ubuntu_version=$(awk -F'=' '/^VERSION_ID=/ { gsub(/"/, "", $2); print $2 }' /etc/os-release)
+      ubuntu_name=$(grep -E '^VERSION=' /etc/os-release | awk -F'"' '{print $2}')
+
+      if [[ "${ubuntu_version//.}" -ge 2204 ]]; then
+        echo "${ubuntu_name} detected"
+
+        source devops/development/ubuntu/functions
+
+        install_essential_packages
+        source $PWD/devops/development/bin/asdf
+      else
+        echo "This setup only supports Ubuntu 22.04 as described in the README. You can run the project normally, but you will have to manually install the required packages according to your distribution."
+        exit 0
+      fi
+    fi
+    ;;
+  darwin*)
+    echo "macOS operating system detected"
+
+    source devops/development/osx/functions
+    install_osx_packages
+    install_development_tools
+    ;;
+  *)
+    echo "Unsupported operating system"
+    exit 1
+    ;;
+esac

@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+function install_essential_packages {
+  APTFILE="$PWD/devops/development/ubuntu/Aptfile"
+  sudo apt update
+  sudo apt install -y $(awk '!/^ *#/ && NF > 0' "$APTFILE")
+}
+
