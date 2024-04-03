@@ -52,4 +52,4 @@ jobs:
       - name: Create database
         run: bundle exec rake auction_fun_core:db:create_database[postgres]
       - name: Run suite
-        run: bundle exec rspec .
+        run: bundle exec rspec --color --format progress
