@@ -38,7 +38,7 @@ jobs:
       - name: Install postgres client dependencies
         run: sudo apt-get install libpq-dev
       - name: Copy env file
-        run: cp ./lib/templates/.env.test.docker.template .env.test
+        run: cp ./lib/templates/.env.test.template .env.test
       - name: Load .env.test file
         uses: xom9ikk/dotenv@v2
         with:
