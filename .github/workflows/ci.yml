@@ -40,7 +40,7 @@ jobs:
       - name: Load .env.test file
         uses: xom9ikk/dotenv@v2
         with:
-          path: ./
+          path: ./lib/templates/.env.test.docker.template
           mode: test
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
