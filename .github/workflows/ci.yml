@@ -1,0 +1,53 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  rubocop:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.0"
+          bundler-cache: true
+      - name: Install dependencies
+        run: bundle install
+      - name: Analyze code
+        run: bundle exec standardrb .
+  rspec:
+    runs-on: ubuntu-22.04
+    env:
+      APP_ENV: test
+      CI: true
+      RACK_ENV: test
+      RAILS_ENV: test
+    services:
+      postgres:
+        image: postgres:16.1
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install postgres client dependencies
+        run: sudo apt-get install libpq-dev
+      - name: Load .env.test file
+        uses: xom9ikk/dotenv@v2
+        with:
+          path: ./
+          mode: test
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.0"
+          bundler-cache: true
+      - name: Create database
+        run: bundle exec rake auction_core:db:create_database[postgres]
+      - name: Run suite
+        run: bundle exec rspec .
