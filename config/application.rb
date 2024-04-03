@@ -40,5 +40,14 @@ module AuctionFunApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Custom global configurations
+    config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
+    config.x.database_url = ENV.fetch("DATABASE_URL")
+    config.x.redis_url = ENV.fetch("REDIS_URL")
+    config.x.default_currency = ENV.fetch("DEFAULT_CURRENCY")
+    config.x.default_email_system = ENV.fetch("DEFAULT_EMAIL_SYSTEM")
+    config.x.smtp_address = ENV.fetch("SMTP_ADDRESS")
+    config.x.smtp_port = ENV.fetch("SMTP_PORT")
   end
 end

@@ -26,8 +26,14 @@ gem "auction_fun_core", path: "../auction_fun_core", require: "auction_fun_core"
 
 group :development, :test do
   gem "pry-rails", "0.3.9"
+  gem "rspec-rails", "6.1.2"
 end
 
 group :development do
   gem "standard", "1.35.1"
+end
+
+group :test do
+  gem "database_cleaner-sequel", "2.0.2"
+  gem "rom-factory", "0.12.0"
 end
