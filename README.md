@@ -81,4 +81,8 @@ Now, create a database and running services
 ```shell
 docker compose run app bash
 bundle exec rake 'auction_fun_core:db:create_database[postgres]'
+bundle exec rake auction_fun_core:db:migrate
+bundle exec rake 'auction_fun_core:db:seed_database
+exit
+docker compose up
 ```
