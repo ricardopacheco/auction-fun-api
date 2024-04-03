@@ -1,0 +1,5 @@
+# Imagemagick or libvips - for processing images (avatars, file uploads, etc)
+brew "vips"
+
+# Development dependencies
+brew "tmux"

@@ -1,0 +1,73 @@
+#!/bin/zsh
+
+# Check if asdf is installed
+if ! command -v asdf >/dev/null 2>&1
+then
+  echo "[bin/asdf] Please install ASDF and add it to the path prior to running this script."
+  exit 1
+fi
+
+# Get the directory of the script
+SCRIPT_DIR="$( cd "$( dirname "${(%):-%N}" )" &> /dev/null && pwd )"
+GEMFILE="$SCRIPT_DIR/../../../Gemfile"
+
+# Read .tool-versions file and store in a key/value variable
+typeset -A plugin_versions
+plugin_order=()
+
+while IFS= read line || [[ -n "$line" ]]; do
+  plugin=$(echo "$line" | awk '{print $1}')
+  version=$(echo "$line" | awk '{print $2}')
+  plugin_versions[$plugin]=$version
+  plugin_order+=($plugin)
+done < .tool-versions
+
+# Display the stored values
+for plugin in "${plugin_order[@]}"; do
+  version="${plugin_versions[$plugin]}"
+  # Check if plugin is installed
+  if asdf list "$plugin" | grep -qF "${plugin_versions[$plugin]}"
+  then
+    echo "[bin/asdf] $plugin $version is already installed!"
+  else
+    echo "[bin/asdf] Installing $plugin version $version"
+
+    # Install plugin
+    asdf plugin add "$plugin"
+    asdf install "$plugin" "${plugin_versions[$plugin]}"
+
+    # If the plugin is nodejs, we need to install maildev globally
+    if [ "$plugin" = "nodejs" ]; then
+      npm install -g maildev@latest
+    fi
+
+    # If the plugin is postgres, we need to recreate the initial cluster so that it uses the
+    # default settings and recreates the shims for the current version of a package.
+    if [ "$plugin" = "postgres" ]; then
+      rm -rf $ASDF_DIR/installs/postgres/${plugin_versions[$plugin]}/data
+      initdb -D $ASDF_DIR/installs/postgres/${plugin_versions[$plugin]}/data -U postgres
+      asdf reshim $plugin
+
+      # For this works,the plugin ruby already needs to be installed
+      # Install pg gem with the correct version and the correct pg_config
+      gem_name=$(awk '/gem "pg"/{print $2}' "$GEMFILE" | tr -d '"'| sed 's/,//')
+      gem_version=$(awk '/gem "pg"/{print $NF}' "$GEMFILE" | tr -d '"')
+
+      gem install $gem_name -v $gem_version --verbose -- --with-pg-config=$ASDF_DIR/installs/postgres/${plugin_versions[$plugin]}/bin/pg_config
+    fi
+
+    # If the plugin is golang, install procfile manager and minio server and client
+    if [ "$plugin" = "golang" ]; then
+      go install github.com/DarthSim/overmind/v2@latest
+    fi
+
+    # If the plugin is postgres, install gem dependencies
+    if [ "$plugin" = "ruby" ]; then
+      bundle check || bundle install
+    fi
+  fi
+done
+
+asdf reshim
+
+echo "[bin/asdf] ASDF installed successfully."

@@ -1,0 +1,48 @@
+# Description: Aptfile for Ubuntu 22.04
+
+# Ruby dependencies
+
+autoconf
+bison
+build-essential
+libffi-dev
+libgdbm6
+libgdbm-dev
+libgmp-dev
+libdb-dev
+libncurses5-dev
+libreadline6-dev
+libssl-dev
+libyaml-dev
+patch
+rustc
+uuid-dev
+zlib1g-dev
+
+# Golang dependencies
+
+curl
+coreutils
+
+# Nokogiri gem dependencies
+
+libgumbo-dev
+liblzma-dev
+libxml2-dev
+libxslt-dev
+patch
+pkg-config
+zlib1g-dev
+
+# Postgresql dependencies
+
+build-essential
+icu-devtools
+libcurl4-openssl-dev
+libssl-dev
+libreadline-dev
+uuid-dev
+zlib1g-dev
+
+# Development tools
+tmux

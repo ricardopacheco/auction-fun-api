@@ -1,0 +1,71 @@
+version: "3.9"
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  gems-data:
+    driver: local
+
+services:
+  database:
+    container_name: db
+    image: postgres:16.1
+    volumes:
+      - ".:/usr/src/app"
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  maildev:
+    container_name: maildev
+    image: djfarrelly/maildev
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+
+  redis:
+    container_name: redis
+    image: redis:7.2.3
+    volumes:
+      - ".:/usr/src/app"
+      - redis-data:/data
+    command: redis-server
+    ports:
+      - "6379:6379"
+
+  app:
+    container_name: app
+    build: .
+    image: auction_fun_api:latest
+    environment:
+      RAILS_ENV: development
+      RACK_ENV: development
+    command: bundle exec puma -C ./config/puma.rb
+    volumes:
+      - ".:/usr/src/app"
+      - gems-data:/usr/local/bundle
+    ports:
+      - "4000:4000"
+    depends_on:
+      - database
+      - redis
+      - maildev
+    stdin_open: true
+    env_file: .env
+    tty: true
+
+  worker:
+    container_name: worker
+    image: timelive_app
+    command: "bundle exec sidekiq"
+    volumes:
+      - ".:/usr/src/app"
+    environment:
+      RAILS_ENV: development
+    depends_on:
+      - database
+      - redis
+      - maildev
+    env_file: .env
