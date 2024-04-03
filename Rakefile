@@ -4,6 +4,6 @@
 require_relative "config/application"
 
 Rails.application.load_tasks
-spec = Gem::Specification.find_by_name 'auction_fun_core'
+spec = Gem::Specification.find_by_name "auction_fun_core"
 
 Dir.glob("#{spec.gem_dir}/lib/tasks/**/*.rake").each { |f| load f }

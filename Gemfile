@@ -12,24 +12,22 @@ gem "pg", "1.5.6"
 gem "puma", "6.4.2"
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem "bootsnap", "1.18.3", require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors", "2.0.2"
 
 # Projects required load environments before rails load
-gem 'dotenv-rails', "3.1.0", require: 'dotenv/load', groups: %i[development test]
+gem "dotenv-rails", "3.1.0", require: "dotenv/load", groups: %i[development test]
 
 # AuctionFunCore
 # gem 'auction_fun_core', "0.8.3"
-gem 'auction_fun_core', path: '../auction_fun_core', require: 'auction_fun_core'
+gem "auction_fun_core", path: "../auction_fun_core", require: "auction_fun_core"
 
 group :development, :test do
-  gem 'pry-rails'
+  gem "pry-rails", "0.3.9"
 end
 
 group :development do
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
+  gem "standard", "1.35.1"
 end
-
