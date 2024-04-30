@@ -42,7 +42,7 @@ module AuctionFunApi
     config.api_only = true
 
     # Configure default timezone
-    config.time_zone = 'America/Sao_Paulo'
+    config.time_zone = "America/Sao_Paulo"
 
     # Custom global configurations
     config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")

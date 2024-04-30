@@ -34,7 +34,7 @@ Dir[AuctionFunCore::Application.root.join("spec", "support", "**", "*.rb")].each
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Rails.root.glob('spec/support/**/*.rb').sort.each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.add_setting :rom
@@ -50,8 +50,7 @@ RSpec.configure do |config|
   end
 
   config.after do
-    DatabaseCleaner[:sequel, :clean]
-    #DatabaseCleaner[:sequel].clean
+    DatabaseCleaner[:sequel].clean
   end
 
   # Remove this line to enable support for ActiveRecord

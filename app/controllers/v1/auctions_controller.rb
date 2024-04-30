@@ -6,7 +6,7 @@ module V1
     def index
       auctions = auction_relation.all(params[:page] || 1, params[:per_page] || 25).to_a
 
-      render json: { auctions: auctions }, status: :ok
+      render json: {auctions: auctions}, status: :ok
     end
 
     private
