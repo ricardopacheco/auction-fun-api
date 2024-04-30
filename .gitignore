@@ -34,3 +34,6 @@
 
 # Redis dump
 dump.rdb
+
+# Ignore test coverage report
+/coverage/

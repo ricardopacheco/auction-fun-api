@@ -6,3 +6,7 @@ function install_essential_packages {
   sudo apt install -y $(awk '!/^ *#/ && NF > 0' "$APTFILE")
 }
 
+function install_git_hooks {
+  overcommit --install
+  overcommit --sign pre-commit
+}

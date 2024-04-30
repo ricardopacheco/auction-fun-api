@@ -25,3 +25,8 @@ function install_brew_dependencies {
 
   brew bundle --file=$BREWFILE
 }
+
+function install_git_hooks {
+  overcommit --install
+  overcommit --sign pre-commit
+}

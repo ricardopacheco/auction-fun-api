@@ -1,0 +1,108 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/auctions":
+    get:
+      summary: Fetching auctions
+      tags:
+      - Auctions
+      parameters:
+      - name: page
+        in: query
+        required: false
+        default: 1
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        default: 10
+        schema:
+          type: integer
+      - name: bidders_count
+        in: query
+        required: false
+        default: 3
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: auction found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: Lightweight Iron Lamp
+                    description:
+                      type: string
+                      example: Quo quidem veniam. Sunt tempora ratione. Aut culpa
+                        qui.
+                    started_at:
+                      type: string
+                      format: date-time
+                      example: '2024-04-30T18:04:51.156934'
+                    finished_at:
+                      type: string
+                      format: date-time
+                      example: '2024-04-30T18:04:51.156934'
+                    initial_bid_cents:
+                      type: integer
+                      example: 100
+                    kind:
+                      type: string
+                      example: standard
+                    status:
+                      type: string
+                      example: running
+                    stopwatch:
+                      type: integer
+                      example: 30
+                    total_bids:
+                      type: integer
+                      example: 1
+                    bids:
+                      type: object
+                      properties:
+                        current:
+                          type: integer
+                          example: 1000
+                        minimal:
+                          type: integer
+                          example: 1000
+                        bidders:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              user_id:
+                                type: integer
+                                example: 2
+                              name:
+                                type: string
+                                example: Beatriz Louzada
+                              value:
+                                type: integer
+                                example: 1000
+                              date:
+                                type: string
+                                format: date-time
+                                example: '2024-04-30T18:04:51.156934'
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:5000/v1
