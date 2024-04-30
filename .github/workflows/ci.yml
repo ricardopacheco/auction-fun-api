@@ -49,7 +49,11 @@ jobs:
         with:
           ruby-version: "3.3.0"
           bundler-cache: true
-      - name: Create database
-        run: bundle exec rake auction_fun_core:db:create_database[postgres]
+      - name: Create database and running migrations
+        run: |
+          bundle exec rake auction_fun_core:db:create_database[postgres]
+          bundle exec rake auction_fun_core:db:migrate
+      - name: Run lint
+        run: bundle exec standardrb
       - name: Run suite
         run: bundle exec rspec --color --format progress

@@ -21,7 +21,7 @@ gem "rack-cors", "2.0.2"
 gem "dotenv-rails", "3.1.0", require: "dotenv/load", groups: %i[development test]
 
 # AuctionFunCore
-gem "auction_fun_core", "0.8.5"
+gem "auction_fun_core", "0.8.10"
 # gem "auction_fun_core", path: "../auction_fun_core", require: "auction_fun_core"
 
 group :development, :test do
