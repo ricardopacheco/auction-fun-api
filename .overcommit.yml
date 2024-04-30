@@ -28,4 +28,6 @@ PreCommit:
     enabled: true
     description: "Generate the Swagger JSON file"
     on_warn: fail
+    env:
+      RAILS_ENV: test
     command: ["bundle", "exec", "rails", "rswag"]
