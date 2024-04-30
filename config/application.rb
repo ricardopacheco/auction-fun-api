@@ -41,6 +41,9 @@ module AuctionFunApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Configure default timezone
+    config.time_zone = 'America/Sao_Paulo'
+
     # Custom global configurations
     config.secret_key_base = ENV.fetch("SECRET_KEY_BASE")
     config.x.database_url = ENV.fetch("DATABASE_URL")

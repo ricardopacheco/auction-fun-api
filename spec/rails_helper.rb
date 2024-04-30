@@ -8,12 +8,13 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require "rspec/rails"
 
 # Start auction fun core application, configure rom and load factories directly from auction core gem.
+require "sidekiq/testing"
 require "rom-factory"
 require "database_cleaner/sequel"
-AuctionCore::Application.start(:core)
+AuctionFunCore::Application.start(:core)
 
 Factory = ROM::Factory.configure do |config|
-  config.rom = AuctionCore::Application[:container]
+  config.rom = AuctionFunCore::Application[:container]
 end
 
 Dir[AuctionFunCore::Application.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
@@ -33,15 +34,8 @@ Dir[AuctionFunCore::Application.root.join("spec", "support", "**", "*.rb")].each
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort.each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').sort.each { |f| require f }
 
-# Checks for pending migrations and applies them before tests are run.
-# If you are not using ActiveRecord, you can remove these lines.
-begin
-  ActiveRecord::Migration.maintain_test_schema!
-rescue ActiveRecord::PendingMigrationError => e
-  abort e.to_s.strip
-end
 RSpec.configure do |config|
   config.add_setting :rom
   config.rom = Factory.rom
@@ -56,7 +50,8 @@ RSpec.configure do |config|
   end
 
   config.after do
-    DatabaseCleaner[:sequel].clean
+    DatabaseCleaner[:sequel, :clean]
+    #DatabaseCleaner[:sequel].clean
   end
 
   # Remove this line to enable support for ActiveRecord
