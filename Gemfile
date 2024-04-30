@@ -21,16 +21,25 @@ gem "rack-cors", "2.0.2"
 gem "dotenv-rails", "3.1.0", require: "dotenv/load", groups: %i[development test]
 
 # AuctionFunCore
-gem "auction_fun_core", "0.8.10"
-# gem "auction_fun_core", path: "../auction_fun_core", require: "auction_fun_core"
+# gem "auction_fun_core", "0.8.10"
+gem "auction_fun_core", path: "../auction_fun_core", require: "auction_fun_core"
+
+# API documentation
+gem "rswag-api", "2.13.0"
+gem "rswag-ui", "2.13.0"
+
+# Git hooks
+gem "overcommit", "0.63.0"
 
 group :development, :test do
   gem "pry-rails", "0.3.9"
   gem "rspec-rails", "6.1.2"
+  gem "rswag-specs", "2.13.0"
   gem "standard", "1.35.1"
 end
 
 group :test do
   gem "database_cleaner-sequel", "2.0.2"
   gem "rom-factory", "0.12.0"
+  gem "simplecov", "0.22.0"
 end

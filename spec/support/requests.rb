@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ControllerHelpers
+module RequestsHelpers
   def json_response
     return if response.body.blank?
 
@@ -9,5 +9,5 @@ module ControllerHelpers
 end
 
 RSpec.configure do |c|
-  c.include ControllerHelpers, type: :controller
+  c.include RequestsHelpers, type: :request
 end
